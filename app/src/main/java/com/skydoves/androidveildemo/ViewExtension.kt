@@ -14,20 +14,14 @@
  * limitations under the License.
  */
 
-package com.skydoves.androidveil
+package com.skydoves.androidveildemo
 
-import android.graphics.drawable.Drawable
-import androidx.annotation.ColorInt
-import com.facebook.shimmer.Shimmer
+import android.view.View
 
-internal data class VeilParams(
-  @ColorInt var baseColor: Int,
-  @ColorInt var highlightColor: Int,
-  var drawable: Drawable?,
-  var radius: Float,
-  var baseAlpha: Float,
-  var highlightAlpha: Float,
-  var dropOff: Float,
-  var shimmerEnable: Boolean,
-  var shimmer: Shimmer?
-)
+internal fun View.visible() {
+  this.visibility = View.VISIBLE
+}
+
+internal fun View.invisible() {
+  this.visibility = View.INVISIBLE
+}

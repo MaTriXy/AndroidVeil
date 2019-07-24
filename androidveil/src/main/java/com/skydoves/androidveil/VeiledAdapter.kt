@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2018 skydoves
  *
@@ -17,39 +16,40 @@
 
 package com.skydoves.androidveil
 
-import android.support.annotation.LayoutRes
 import android.view.View
+import androidx.annotation.LayoutRes
 import com.skydoves.baserecyclerviewadapter.BaseAdapter
 import com.skydoves.baserecyclerviewadapter.BaseViewHolder
 import com.skydoves.baserecyclerviewadapter.SectionRow
 
-class VeiledAdapter(@LayoutRes private val userLayout: Int,
-                    private val onItemClickListener: VeiledItemOnClickListener? = null)
-    : BaseAdapter() {
+internal class VeiledAdapter(
+  @LayoutRes private val userLayout: Int,
+  private val onItemClickListener: VeiledItemOnClickListener? = null
+) : BaseAdapter() {
 
-    fun addParams(params : List<VeilParams>) {
-        clearSections()
-        addSection(ArrayList<VeilParams>())
-        addItemsOnSection(0, params)
-        notifyDataSetChanged()
-    }
+  fun addParams(params: List<VeilParams>) {
+    clearAllSections()
+    addSection(ArrayList<VeilParams>())
+    addItemListOnSection(0, params)
+    notifyDataSetChanged()
+  }
 
-    fun update(position: Int, threshold: Int) {
-        when(sections[0].size > position) {
-            true -> notifyItemChanged(position)
-            false -> {
-                for (i in position..position + threshold) {
-                    notifyItemChanged(i)
-                }
-            }
+  fun update(position: Int, threshold: Int) {
+    when (sections()[0].size > position) {
+      true -> notifyItemChanged(position)
+      false -> {
+        for (i in position..position + threshold) {
+          notifyItemChanged(i)
         }
+      }
     }
+  }
 
-    override fun layout(sectionRow: SectionRow): Int {
-        return R.layout.item_veiled_layout
-    }
+  override fun layout(sectionRow: SectionRow): Int {
+    return R.layout.item_veiled_layout
+  }
 
-    override fun viewHolder(layout: Int, view: View): BaseViewHolder {
-        return VeiledViewHolder(view, userLayout, onItemClickListener)
-    }
+  override fun viewHolder(layout: Int, view: View): BaseViewHolder {
+    return VeiledViewHolder(view, userLayout, onItemClickListener)
+  }
 }

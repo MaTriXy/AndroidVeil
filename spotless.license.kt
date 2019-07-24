@@ -13,21 +13,4 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package com.skydoves.androidveil
-
-import android.graphics.drawable.Drawable
-import androidx.annotation.ColorInt
-import com.facebook.shimmer.Shimmer
-
-internal data class VeilParams(
-  @ColorInt var baseColor: Int,
-  @ColorInt var highlightColor: Int,
-  var drawable: Drawable?,
-  var radius: Float,
-  var baseAlpha: Float,
-  var highlightAlpha: Float,
-  var dropOff: Float,
-  var shimmerEnable: Boolean,
-  var shimmer: Shimmer?
-)
+ 

@@ -21,24 +21,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.skydoves.androidveil.VeiledItemOnClickListener
 import com.skydoves.androidveildemo.profile.ListItemUtils
 import com.skydoves.androidveildemo.profile.Profile
 import com.skydoves.androidveildemo.profile.ProfileAdapter
 import com.skydoves.androidveildemo.profile.ProfileViewHolder
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.activity_main.*
-import java.util.concurrent.TimeUnit
+import kotlinx.android.synthetic.main.activity_second.*
 
-/**
- * Developed by skydoves on 2018-10-30.
- * Copyright (c) 2018 skydoves rights reserved.
- */
-
-class MainActivity : AppCompatActivity(),
-  VeiledItemOnClickListener,
+class SecondActivity : AppCompatActivity(), VeiledItemOnClickListener,
   ProfileViewHolder.Delegate {
 
   private val adapter by lazy { ProfileAdapter(this) }
@@ -46,21 +37,16 @@ class MainActivity : AppCompatActivity(),
   @SuppressLint("CheckResult")
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_main)
+    setContentView(R.layout.activity_second)
 
     // sets VeilRecyclerView's properties
-    veilRecyclerView.setVeilLayout(R.layout.item_profile, this)
-    veilRecyclerView.setAdapter(adapter)
-    veilRecyclerView.setLayoutManager(LinearLayoutManager(this))
-    veilRecyclerView.addVeiledItems(15)
+    veilFrameView.setVeilLayout(R.layout.item_preview, this)
+    veilFrameView.setAdapter(adapter)
+    veilFrameView.setLayoutManager(GridLayoutManager(this, 2))
+    veilFrameView.addVeiledItems(12)
 
     // add profile times to adapter
     adapter.addProfiles(ListItemUtils.getProfiles(this))
-
-    // delay-auto-unveil
-    Observable.just(0).delay(5000, TimeUnit.MILLISECONDS)
-      .observeOn(AndroidSchedulers.mainThread())
-      .subscribe { veilRecyclerView.unVeil() }
   }
 
   /** OnItemClickListener by Veiled Item */

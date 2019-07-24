@@ -1,4 +1,3 @@
-
 /*
  * Copyright (C) 2018 skydoves
  *
@@ -17,50 +16,56 @@
 
 package com.skydoves.androidveil
 
-import android.support.annotation.LayoutRes
 import android.view.View
-import com.facebook.shimmer.Shimmer
+import androidx.annotation.LayoutRes
 import com.skydoves.baserecyclerviewadapter.BaseViewHolder
 
-class VeiledViewHolder(view: View, @LayoutRes val layout: Int,
-                       private val onItemClickListener: VeiledItemOnClickListener? = null)
-    : BaseViewHolder(view) {
+internal class VeiledViewHolder(
+  view: View,
+  @LayoutRes val layout: Int,
+  private val onItemClickListener: VeiledItemOnClickListener? = null
+) : BaseViewHolder(view) {
 
-    private lateinit var veilParams: VeilParams
+  private lateinit var veilParams: VeilParams
 
-    @Throws(Exception::class)
-    override fun bindData(data: Any) {
-        if (data is VeilParams) {
-            veilParams = data
-            drawItem()
+  @Throws(Exception::class)
+  override fun bindData(data: Any) {
+    if (data is VeilParams) {
+      veilParams = data
+      drawItem()
+    }
+  }
+
+  /** Draw ViewHolderItem by data */
+  private fun drawItem() {
+    if (itemView is VeilLayout && itemView.layout == -1) {
+      itemView.layout = layout
+      veilParams.shimmer?.let {
+        itemView.shimmer = it
+      } ?: let {
+        val shimmer = colorShimmer {
+          setBaseColor(veilParams.baseColor)
+          setBaseAlpha(veilParams.baseAlpha)
+          setHighlightColor(veilParams.highlightColor)
+          setHighlightAlpha(veilParams.highlightAlpha)
+          setDropoff(veilParams.dropOff)
         }
+        itemView.shimmer = shimmer
+      }
+      itemView.radius = veilParams.radius
+      itemView.drawable = veilParams.drawable
+      itemView.shimmerEnable = veilParams.shimmerEnable
+      itemView.veil()
+    } else if (itemView is VeilLayout) {
+      itemView.veil()
+      itemView.startShimmer()
     }
+  }
 
-    /** Draw ViewHolderItem by data */
-    private fun drawItem() {
-        if(itemView is VeilLayout && itemView.layout == -1) {
-            itemView.layout = layout
-            veilParams.shimmer?.let {
-                itemView.shimmer = it
-            } ?: let {
-                val shimmer = Shimmer.ColorHighlightBuilder().setBaseColor(veilParams.baseColor).setHighlightColor(veilParams.highlightColor)
-                        .setBaseAlpha(veilParams.baseAlpha).setHighlightAlpha(veilParams.highlightAlpha).setDropoff(veilParams.dropOff).build()
-                itemView.shimmer = shimmer
-            }
-            itemView.shimmerEnable = veilParams.shimmerEnable
-            itemView.veil()
-        } else if(itemView is VeilLayout) {
-            itemView.veil()
-            itemView.startShimmer()
-        }
-    }
+  /** Event OnClickListener */
+  override fun onClick(p0: View?) {
+    onItemClickListener?.onItemClicked(adapterPosition)
+  }
 
-    /** Event OnClickListener */
-    override fun onClick(p0: View?) {
-        onItemClickListener?.onItemClicked(adapterPosition)
-    }
-
-    override fun onLongClick(p0: View?): Boolean {
-        return false
-    }
+  override fun onLongClick(p0: View?) = false
 }
