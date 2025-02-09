@@ -1,45 +1,41 @@
+
+<h1 align="center">AndroidVeil</h1></br>
+
 <p align="center">
 <img src="https://user-images.githubusercontent.com/24237865/50557081-fdd3a300-0d24-11e9-82e3-6ddad326cd40.png"/>
 </p>
 <p align="center">
 An easy, flexible way to implement veil skeletons and shimmering effect for Android.
-</p>
+</p><br>
 
 <p align="center">
   <a href="https://opensource.org/licenses/Apache-2.0"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg"/></a>
-  <a href="https://android-arsenal.com/api?level=15"><img alt="API" src="https://img.shields.io/badge/API-15%2B-brightgreen.svg?style=flat"/></a>
-  <a href="https://travis-ci.org/skydoves/AndroidVeil"><img alt="Build Status" src="https://travis-ci.org/skydoves/AndroidVeil.svg?branch=master"/></a>
+  <a href="https://android-arsenal.com/api?level=21"><img alt="API" src="https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat"/></a>
+  <a href="https://github.com/skydoves/AndroidVeil/actions"><img alt="Build Status" src="https://github.com/skydoves/TransformationLayout/workflows/Android%20CI/badge.svg"/></a> 
   <a href="https://androidweekly.net/issues/issue-334"><img alt="Android Weekly" src="https://img.shields.io/badge/Android%20Weekly-%23334-orange.svg"/></a>
-    <a href="https://skydoves.github.io/libraries/androidveil/javadoc/androidveil/index.html"><img alt="Android Weekly" src="https://img.shields.io/badge/Javadoc-AndroidVeil-yellow.svg"/></a>
+  <a href="https://medium.com/swlh/how-to-implement-veil-skeletons-and-shimmering-effects-to-your-layouts-and-recyclerview-on-android-44af35d90de5"><img alt="Medium" src="https://skydoves.github.io/badges/Story-Medium.svg"/></a>
+  <a href="https://skydoves.github.io/libraries/androidveil/javadoc/androidveil/index.html"><img alt="Android Weekly" src="https://img.shields.io/badge/Javadoc-AndroidVeil-yellow.svg"/></a>
+</p><br>
+
+<p align="center">
+<img src="https://github.com/skydoves/AndroidVeil/blob/master/art/shimmer01.gif" width="32%"/>
+<img src="https://github.com/skydoves/AndroidVeil/blob/master/art/shimmer02.gif" width="32%"/>
 </p>
 
-
-# AndroidVeil
-![gif0](https://github.com/skydoves/AndroidVeil/blob/master/art/shimmer01.gif)
-![gif1](https://github.com/skydoves/AndroidVeil/blob/master/art/shimmer02.gif)
-
 ## Download
-[![Download](https://api.bintray.com/packages/devmagician/maven/androidveil/images/download.svg)](https://bintray.com/devmagician/maven/androidveil/_latestVersion)
-[![Jitpack](https://jitpack.io/v/skydoves/AndroidVeil.svg)](https://jitpack.io/#skydoves/AndroidVeil)
-### Gradle
-Add below codes to your **root** `build.gradle` file (not your module build.gradle file).
-```gradle
-allprojects {
-    repositories {
-        jcenter()
-    }
-}
-```
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.skydoves/androidveil.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.skydoves%22%20AND%20a:%22androidveil%22)
 
-And add a dependency code to your **module**'s `build.gradle` file.
+### Gradle
+Add the dependency below to your **module**'s `build.gradle` file:
+
 ```gradle
 dependencies {
-    implementation "com.github.skydoves:androidveil:1.0.6"
+    implementation("com.github.skydoves:androidveil:1.1.4")
 }
 ```
 
 ## Usage
-First, add following XML namespace inside your XML layout file.
+First, add following XML namespace inside your XML layout file:
 
 ```gradle
 xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -104,7 +100,9 @@ veilLayout.layout = R.layout.layout_item_test
         app:veilFrame_highlightColor="@android:color/holo_green_light" // sets shimmer highlight color
         app:veilFrame_baseAlpha="0.6" // sets shimmer base alpha value
         app:veilFrame_highlightAlpha="1.0" // sets shimmer highlight alpha value
-        app:veilFrame_radius="8dp" // sets a corner radius of the whole veiled items />
+        app:veilFrame_radius="8dp" // sets a corner radius of the whole veiled items 
+        app:veilFrame_isItemWrapContentHeight="true"  // sets height of list item wrap_content
+        app:veilFrame_isItemWrapContentWidth="true"   // sets width of list item wrap_content />
 ```
 
 And we should attach our own adapter and LayoutManager.
@@ -112,6 +110,19 @@ And we should attach our own adapter and LayoutManager.
 veilRecyclerView.setAdapter(adapter) // sets your own adapter
 veilRecyclerView.setLayoutManager(LinearLayoutManager(this)) // sets LayoutManager
 veilRecyclerView.addVeiledItems(15) // add veiled 15 items
+```
+
+#### VeilRecyclerFrameView with a horizontal carousel
+
+Automatically masking a horizontal layout is **not supported yet**. Horizontal (carousel) layouts **can** be used if you specify their shimmer layout yourself in advance (and tell the view to use this prepared layout by setting `isPrepared = true`). See `CarouselActivity` for an example
+```kotlin
+veilRecyclerView.setVeilLayout(
+  layout = R.layout.item_prepared_shimmer_carousel,
+  isPrepared = true
+)
+veilRecyclerView.setAdapter(adapter)
+veilRecyclerView.setLayoutManager(LinearLayoutManager(this, RecyclerView.HORIZONTAL, false))
+addVeiledItems(15)
 ```
 
 #### Veil and UnVeil
@@ -175,13 +186,13 @@ highlightColor | ColorInt | Color.DKGRAY | sets shimmer highlight color.
 baseAlpha | Float | 1.0f | sets shimmer base alpha value.
 highlightAlpha | Float | 1.0f | sets shimmer highlight alpha value.
 dropOff | Float | 0.5f | sets how quickly the shimmer's gradient drops-off.
+defaultChildVisible | Boolean | false | sets the child view's visibility when called veil and unveil.
+isItemWrapContentHeight | Boolean | false | sets height of veiled list item wrap_content
+isItemWrapContentWidth | Boolean | false | sets width of veiled list item wrap_content
 
-## Find this library useful? :heart:
-Support it by joining __[stargazers](https://github.com/skydoves/AndroidVeil/stargazers)__ for this repository. :star:
-
-## Supports :coffee:
-If you feel like support me a coffee for my efforts, I would greatly appreciate it. <br><br>
-<a href="https://www.buymeacoffee.com/skydoves" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/purple_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
+## Find this repository useful? :heart:
+Support it by joining __[stargazers](https://github.com/skydoves/androidveil/stargazers)__ for this repository. :star: <br>
+Also __[follow](https://github.com/skydoves)__ me for my next creations! 🤩
 
 # License
 ```xml
